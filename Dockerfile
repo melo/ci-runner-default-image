@@ -8,4 +8,4 @@ RUN apt-get update \
     && cpanm -n App::cpanminus Carton \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
-    && rm -rf "$HOME/.cpanm"
+    && rm -rf "$HOME/.cpanm" "$HOME/.npm"
