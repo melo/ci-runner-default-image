@@ -7,7 +7,7 @@ RUN apt-get update \
     && chmod +x /usr/local/bin/docker-compose \
     && ln -s /usr/bin/nodejs /usr/bin/node \
     && npm install -g uglifyjs csso \
-    && cpanm -n App::cpanminus Carton \
+    && cpanm -n App::cpanminus Carton Capture::Tiny \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf "$HOME/.cpanm" "$HOME/.npm"
