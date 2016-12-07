@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+#
+# Execute command, retry if response matched first argument
+#
+# Sample usage:
+#
+#    cmd-retry "502 Bad Gateway" docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+#
+
+use strict;
+use Capture::Tiny 'capture';
+
+my $patt = shift(@ARGV);
+
+my $start = time();
+my $limit = 60;
+
+while (time()-$start < $limit) {
+  my ($stdout, $stderr, $exit) = capture { system(@ARGV) };
+  unless ($stdout =~ m/$patt/ or $stderr =~ m/$patt/) {
+    print STDOUT $stdout if $stdout;
+    print STDERR $stderr if $stderr;
+    exit($exit);
+  }
+
+  warn "*** Failed '@ARGV' execution, output matches '$patt'\n";
+  warn "*** STDOUT is:\n$stdout\n\n";
+  warn "*** STDERR is:\n$stderr\n\n";
+  warn "*** Sleeping a bit...\n";
+  sleep(5);
+}
+
+warn "*** FATAL: failed to exec @ARGV, always getting errors\n";
+exit(99);

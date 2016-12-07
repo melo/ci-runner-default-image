@@ -11,3 +11,7 @@ RUN apt-get update \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf "$HOME/.cpanm" "$HOME/.npm"
+
+COPY cmd-retry /usr/bin/
+RUN chmod 555 /usr/bin/cmd-retry
+
