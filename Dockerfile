@@ -10,7 +10,11 @@ RUN apt-get update                                                              
  && apt-get autoremove -y                                                               \
  && rm -rf "$HOME/.cpanm" "$HOME/.npm"
 
-RUN curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose \
+RUN BASE="https://github.com/docker/compose"                                        \
+ && LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' "$BASE/releases/latest" | jq -r .tag_name)  \
+ && echo "*** Installing docker-compose version $LATEST_RELEASE"                    \
+ && curl -L "$BASE/releases/download/$LATEST_RELEASE/docker-compose-Linux-x86_64"   \
+    -o /usr/local/bin/docker-compose                                                \
  && chmod +x /usr/local/bin/docker-compose
 
 COPY cmd-retry /usr/bin/
