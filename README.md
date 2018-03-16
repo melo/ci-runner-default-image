@@ -6,6 +6,7 @@ The following packages are installed:
 
 * git;
 * curl;
+* jq;
 * nodejs and npm;
 * perl;
 * docker;
