@@ -24,8 +24,15 @@ The following Perl modules are installed, globally:
 * App::cpanminus;
 * Carton.
 
-There is also a command available, `cmd-retry`, that executes the command given as parameter while
-a specific string shows up in the output. For example:
+
+# Helper commands
+
+We also include some helpers for common CI tasks.
+
+## `cmd-retry`
+
+The `cmd-retry` helper will repeat the execution of the command given as parameter while a specific
+string shows up in the output. For example:
 
     cmd-retry "502 Bad Gateway" docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
 
