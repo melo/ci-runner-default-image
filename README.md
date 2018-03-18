@@ -60,6 +60,9 @@ In particular:
 This wrapper around `docker build` will read the Dockerfile file and use `docker pull` on all
 images used as `FROM`.
 
+If the `-t` or `--tag` options is present, we will also use pull it to prime the Docker build
+cache. See `docker-prime-cache` for a standalone version of this process.
+
 This is a workaround for a Docker bug that fails to pull images mentioned in a `FROM` if the
 registry is private and requires authentication.
 

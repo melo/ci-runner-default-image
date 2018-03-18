@@ -23,8 +23,12 @@ EOF
 
 ### Argument parsing and validation
 my %opt;
-GetOptions(\%opt, 'help|?', 'file|f=s') or usage();
+GetOptions(\%opt, 'help|?', 'file|f=s', 'tag|t=s') or usage();
 usage() if $opt{help};
+
+
+### Pull the destination image, prime the build cache
+pull_image($opt{tag}) if $opt{tag};
 
 
 ### Scan and pull FROM images
