@@ -3,7 +3,7 @@
 # Performs some common operations, to be used in a before_script block
 #
 
-use 5.026;
+use 5.022;
 use warnings;
 
 my $is_perl_project = -e 'cpanfile' || -e 'Makefile.PL';
