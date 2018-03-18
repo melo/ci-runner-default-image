@@ -45,7 +45,7 @@ if (-r $dockerfile) {
 
 
 ## Build the docker build command
-my @cmd = qw( docker build );
+my @cmd = qw( time docker build );
 push @cmd, '--file', $dockerfile if $dockerfile;
 push @cmd, @ARGV;
 
