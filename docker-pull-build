@@ -9,16 +9,10 @@ use Getopt::Long qw( :config pass_through );
 
 sub usage {
   print <<EOF;
-Usage: cmd-retry [options] -- <message> <cmd> [cmd_args]...
+Usage: docker-pull-build [docker-build-options]
 
-  Executes <cmd> while the <message> appears in the output.
-
-  Options:
-
-    --help,-?     This message
-
-    --retry=n     How many seconds to sleep between retries, default is 5 seconds
-    --timeout=n   Give up after <n> seconds trying, default is 60 seconds
+  Parses the Dockerfile for the build and pull any images used as FROM.
+  
 EOF
 
   print "ERROR: @_\n" if @_;
