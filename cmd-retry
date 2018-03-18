@@ -7,13 +7,44 @@
 #    cmd-retry "502 Bad Gateway" docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
 #
 
-use strict;
+use 5.22;
+use warnings;
 use Capture::Tiny 'capture';
+use Getopt::Long;
+
+sub usage {
+  print <<EOF;
+Usage: cmd-retry [options] -- <message> <cmd> [cmd_args]...
+
+  Executes <cmd> while the <message> appears in the output.
+
+  Options:
+
+    --help,-?     This message
+
+    --retry=n     How many seconds to sleep between retries, default is 5 seconds
+    --timeout=n   Give up after <n> seconds trying, default is 60 seconds
+EOF
+
+  print "ERROR: @_\n" if @_;
+  
+  exit(1);
+}
+
+
+### Argument parsing and validation
+my %opt;
+GetOptions(\%opt, 'help|?', 'retry=i', 'timeout=i') or usage();
+usage() if $opt{help};
 
 my $patt = shift(@ARGV);
+usage("the <message> argument is required") unless $patt;
+usage("the <cmd> argument is required") unless @ARGV;
 
+
+### Logic
 my $start = time();
-my $limit = 60;
+my $limit = $opt{timeout};
 
 while (time()-$start < $limit) {
   my ($stdout, $stderr, $exit) = capture { system(@ARGV) };
@@ -26,9 +57,9 @@ while (time()-$start < $limit) {
   warn "*** Failed '@ARGV' execution, output matches '$patt'\n";
   warn "*** STDOUT is:\n$stdout\n\n";
   warn "*** STDERR is:\n$stderr\n\n";
-  warn "*** Sleeping a bit...\n";
-  sleep(5);
+  warn "*** Sleeping $opt{retry} seconds...\n";
+  sleep($opt{retry});
 }
 
-warn "*** FATAL: failed to exec @ARGV, always getting errors\n";
+warn "*** FATAL: failed to exec '@ARGV' inside $limit seconds, always getting errors\n";
 exit(99);

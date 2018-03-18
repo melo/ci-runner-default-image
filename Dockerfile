@@ -5,7 +5,7 @@ RUN apt-get update                                                              
  && apt-get install -y nodejs npm git docker.io carton redis-tools mysql-client curl jq \
  && ln -s /usr/bin/nodejs /usr/bin/node                                                 \
  && npm install -g uglify-js csso gitbook-cli                                           \
- && cpanm -n App::cpanminus Carton Capture::Tiny                                        \
+ && cpanm -n App::cpanminus Carton Capture::Tiny Getopt::Long                           \
  && apt-get clean autoclean                                                             \
  && apt-get autoremove -y                                                               \
  && rm -rf "$HOME/.cpanm" "$HOME/.npm"
