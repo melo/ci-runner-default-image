@@ -17,5 +17,5 @@ RUN BASE="https://github.com/docker/compose"                                    
     -o /usr/local/bin/docker-compose                                                \
  && chmod +x /usr/local/bin/docker-compose
 
-COPY cmd-retry /usr/bin/
-RUN chmod 555 /usr/bin/cmd-retry
+COPY cmd-retry docker-* ci-* /usr/local/bin/
+RUN chmod 555 /usr/local/cmd-retry /usr/local/docker-* /usr/local/ci-*
