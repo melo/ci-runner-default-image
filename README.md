@@ -53,3 +53,9 @@ In particular:
   `BUILD_IMAGE` and `RELEASE_IMAGE` entries to be reused on multiple jobs;
 * The version of some utilities: `git`, `docker`, and `docker-compose`;
 * If a Perl project is detected, we will also output the `perl` version and list the `cpanfile*` files. 
+
+
+## `docker-push-retry`
+
+This is just a small wrapper script that will accept all of `docker push` arguments and wrap it
+with a `cmd-retr '502 Bad Gateway'` to work around some unstable Docker Registries.

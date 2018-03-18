@@ -1,0 +1,6 @@
+#!/bin/sh
+#
+# small wrapper script for a common pattern: pushing to a unstable docker registry
+#
+
+exec cmd-retry "502 Bad Gateway" docker push "$@"
