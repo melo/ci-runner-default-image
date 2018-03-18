@@ -10,7 +10,7 @@
 use 5.022;
 use warnings;
 use Capture::Tiny 'capture';
-use Getopt::Long;
+use Getopt::Long qw( :config pass_through );
 
 sub usage {
   print <<EOF;
