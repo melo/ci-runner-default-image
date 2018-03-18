@@ -8,6 +8,9 @@ use warnings;
 
 my $is_perl_project = -e 'cpanfile' || -e 'Makefile.PL';
 
+print "\n\n*********************** Start CI Bootstrap information ******************";
+
+
 ### Gitlab Registry information
 say <<EOF;
 
@@ -66,3 +69,5 @@ if (-d '.git') {
   say "  Last commit message:";
   system('git', 'show', '--no-patch');
 }
+
+print "\n\n*********************** End CI Bootstrap information ******************";
