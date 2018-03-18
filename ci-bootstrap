@@ -56,3 +56,13 @@ if($is_perl_project) {
   
   system('ls -la cpanfile*');
 }
+
+
+### Git last commit - give context to this build
+if (-d '.git') {
+  say "\n\n**** Last git commit\n";
+  print "  Last commit ID: ";
+  system('git', 'describe', '--always');
+  say "  Last commit message:";
+  system('git', 'show', '--no-patch');
+}
