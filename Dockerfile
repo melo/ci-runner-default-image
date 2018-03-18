@@ -10,12 +10,14 @@ RUN apt-get update                                                              
  && apt-get autoremove -y                                                               \
  && rm -rf "$HOME/.cpanm" "$HOME/.npm"
 
+ENV MY_BINS /usr/local/bin
+
 RUN BASE="https://github.com/docker/compose"                                        \
  && LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' "$BASE/releases/latest" | jq -r .tag_name)  \
  && echo "*** Installing docker-compose version $LATEST_RELEASE"                    \
  && curl -L "$BASE/releases/download/$LATEST_RELEASE/docker-compose-Linux-x86_64"   \
-    -o /usr/local/bin/docker-compose                                                \
- && chmod +x /usr/local/bin/docker-compose
+    -o $MY_BINS/docker-compose                                                \
+ && chmod +x $MY_BINS/docker-compose
 
-COPY cmd-retry docker-* ci-* /usr/local/bin/
-RUN chmod 555 /usr/local/cmd-retry /usr/local/docker-* /usr/local/ci-*
+COPY cmd-retry docker-* ci-* $MY_BINS/
+RUN bash -c "chmod 555 $MY_BINS/{cmd-*,docker-*,ci-*}"
