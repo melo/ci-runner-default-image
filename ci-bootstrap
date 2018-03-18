@@ -22,7 +22,7 @@ EOF
 
 
 ### Environment about images
-say "\n\n**** Images to use\n"
+say "\n\n**** Images to use\n";
 say "  $_: $ENV{$_}" for sort grep {m/_IMAGE$/} keys %ENV;
 
 
@@ -48,7 +48,7 @@ if ($is_perl_project) {
 say "\n\n**** Authentication into gitlab Registry";
 system(
   'cmd-retry', '502 Bad Gateway',
-  'docker', 'login', '-u', 'gitlab-ci-token' '-p' $ENV{CI_BUILD_TOKEN},
+  'docker', 'login', '-u', 'gitlab-ci-token', '-p', $ENV{CI_BUILD_TOKEN},
   $ENV{CI_REGISTRY}
 );
 
