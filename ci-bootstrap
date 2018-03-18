@@ -1,0 +1,58 @@
+#!/usr/bin/env perl
+#
+# Performs some common operations, to be used in a before_script block
+#
+
+use 5.026;
+use warnings;
+
+my $is_perl_project = -e 'cpanfile' || -e 'Makefile.PL';
+
+### Gitlab Registry information
+say <<EOF;
+
+**** Registry information
+
+  Registry:      $ENV{CI_REGISTRY}
+  Registry Name: $ENV{CI_REGISTRY_IMAGE}
+EOF
+
+
+### Environment about images
+say "\n\n**** Images to use\n"
+say "  $_: $ENV{$_}" for sort grep {m/_IMAGE$/} keys %ENV;
+
+
+### Output utilities versions
+say "\n\n**** Utilities versions\n";
+print "  git:            ";
+system('git', '--version');
+
+print "  docker:         ";
+system('docker', '--version');
+
+print "  docker-compose: ";
+system('docker-compose', '--version');
+
+if ($is_perl_project) {
+  ## The CI image perl is not really important, but still...
+  print "  perl:           ";
+  system('perl', '-v');
+}
+
+
+### Docker registry authentication
+say "\n\n**** Authentication into gitlab Registry";
+system(
+  'cmd-retry', '502 Bad Gateway',
+  'docker', 'login', '-u', 'gitlab-ci-token' '-p' $ENV{CI_BUILD_TOKEN},
+  $ENV{CI_REGISTRY}
+);
+
+
+### Perl-specific helpers
+if($is_perl_project) {
+  say "\n\n*** cpanfile status (for docker cache debugging - using ls -la cpanfile*)\n";
+  
+  system('ls -la cpanfile*');
+}

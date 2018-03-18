@@ -39,3 +39,17 @@ string shows up in the output. For example:
 This will retry the `docker login` command while the `502 Bad gateway` shows in the command output.
 The command will pause 5 seconds between retries and will retry at most 60 seconds.
 
+## `ci-bootstrap`
+
+This command, usually used on `before_script` blocks, will output several pieces of information
+that might be useful to diagnose issues with your jobs.
+
+It will also login into the Gitlab Registry using the environment variable `CI_BUILD_TOKEN`.
+
+In particular:
+
+* Gitlab Registry information;
+* Dump of all environment variables that end in `_IMAGE`: we tipically use a `variables` block with
+  `BUILD_IMAGE` and `RELEASE_IMAGE` entries to be reused on multiple jobs;
+* The version of some utilities: `git`, `docker`, and `docker-compose`;
+* If a Perl project is detected, we will also output the `perl` version and list the `cpanfile*` files. 
