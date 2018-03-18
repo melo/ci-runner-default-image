@@ -55,6 +55,15 @@ In particular:
 * If a Perl project is detected, we will also output the `perl` version and list the `cpanfile*` files. 
 
 
+## `docker-pull-build`
+
+This wrapper around `docker build` will read the Dockerfile file and use `docker pull` on all
+images used as `FROM`.
+
+This is a workaround for a Docker bug that fails to pull images mentioned in a `FROM` if the
+registry is private and requires authentication.
+
+
 ## `docker-push-retry`
 
 This is just a small wrapper script that will accept all of `docker push` arguments and wrap it

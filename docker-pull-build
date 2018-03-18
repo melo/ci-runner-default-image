@@ -1,0 +1,66 @@
+#!/usr/bin/env perl
+#
+# Wrapper script that will docker pull any images uses as "FROM"
+#
+
+use 5.022;
+use warnings;
+use Getopt::Long qw( :config pass_through );
+
+sub usage {
+  print <<EOF;
+Usage: cmd-retry [options] -- <message> <cmd> [cmd_args]...
+
+  Executes <cmd> while the <message> appears in the output.
+
+  Options:
+
+    --help,-?     This message
+
+    --retry=n     How many seconds to sleep between retries, default is 5 seconds
+    --timeout=n   Give up after <n> seconds trying, default is 60 seconds
+EOF
+
+  print "ERROR: @_\n" if @_;
+  
+  exit(1);
+}
+
+
+### Argument parsing and validation
+my %opt;
+GetOptions(\%opt, 'help|?', 'file|f=s') or usage();
+usage() if $opt{help};
+
+
+### Scan and pull FROM images
+my $dockerfile = $opt{file} || 'Dockerfile';
+if (-r $dockerfile) {
+  open(my $fh, '<', $dockerfile) or die "FATAL: failed to open '$dockerfile': $!\n";
+  while (<$fh>) {
+    pull_image($1) if m/^\s*FROM\s+(\S+)/;
+  }
+  close($fh);
+}
+
+
+## Build the docker build command
+my @cmd = qw( docker build );
+push @cmd, '--file', $dockerfile if $dockerfile;
+push @cmd, @ARGV;
+
+
+## Exec it....
+exec(@cmd);
+die "FATAL: failed to exec '@cmd': $!\n";
+
+
+
+##### Utilities
+
+sub pull_image {
+  my ($image) = @_;
+  
+  say "... pulling '$image':";
+  system('docker', 'pull', $image);
+}
