@@ -1,0 +1,10 @@
+#!/usr/bin/env perl
+#
+# Pulls images to prime docker build cache
+#
+
+use 5.022;
+use warnings;
+
+system('docker', 'pull', $_) for grep { $_ } @ARGV;
+exit(0);

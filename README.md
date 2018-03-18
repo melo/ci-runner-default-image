@@ -64,6 +64,17 @@ This is a workaround for a Docker bug that fails to pull images mentioned in a `
 registry is private and requires authentication.
 
 
+## `docker-prime-cache`
+
+This script accetps a list of docker images and tries to pull them. If the pull fails, the error is ignored.
+
+It will always exit 0.
+
+This is useful to prime the Docker build cache. If you are building a image named `x:latest`, you
+can pull `x:latest` before starting the build try and reuse as much layers as possible, because
+usually pulling a image is faster than building the same image.
+
+
 ## `docker-push-retry`
 
 This is just a small wrapper script that will accept all of `docker push` arguments and wrap it
