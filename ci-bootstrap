@@ -70,4 +70,4 @@ if (-d '.git') {
   system('git', 'show', '--no-patch');
 }
 
-print "\n\n*********************** End CI Bootstrap information ******************";
+say "\n\n*********************** End CI Bootstrap information ******************\n";
