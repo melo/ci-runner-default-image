@@ -51,6 +51,7 @@ push @cmd, @ARGV;
 
 
 ## Exec it....
+print "... building using '@cmd'\n";
 exec(@cmd);
 die "FATAL: failed to exec '@cmd': $!\n";
 
