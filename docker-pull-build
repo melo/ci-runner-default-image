@@ -16,7 +16,7 @@ Usage: docker-pull-build [docker-build-options]
 EOF
 
   print "ERROR: @_\n" if @_;
-  
+
   exit(1);
 }
 
@@ -56,12 +56,11 @@ exec(@cmd);
 die "FATAL: failed to exec '@cmd': $!\n";
 
 
-
 ##### Utilities
 
 sub pull_image {
   my ($image) = @_;
-  
+
   say "... pulling '$image':";
   system('docker', 'pull', $image);
 }
