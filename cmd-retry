@@ -33,7 +33,7 @@ EOF
 
 
 ### Argument parsing and validation
-my %opt;
+my %opt = ( retry => 5, timeout => 60);
 GetOptions(\%opt, 'help|?', 'retry=i', 'timeout=i') or usage();
 usage() if $opt{help};
 
