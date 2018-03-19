@@ -28,7 +28,8 @@ usage() if $opt{help};
 
 
 ### Pull the destination image, prime the build cache
-pull_image($opt{tag}) if $opt{tag};
+my $tag = $opt{tag};    ## FIXME: support multiple tags
+pull_image($tag) if $tag;
 
 
 ### Scan and pull FROM images
@@ -45,6 +46,7 @@ if (-r $dockerfile) {
 ## Build the docker build command
 my @cmd = qw( docker build );
 push @cmd, '--file', $dockerfile if $dockerfile;
+push @cmd, '--tag',  $tag        if $tag;
 push @cmd, @ARGV;
 
 
