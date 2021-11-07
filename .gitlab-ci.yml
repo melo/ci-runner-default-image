@@ -1,0 +1,7 @@
+stages:
+  - build
+
+build-and-push:
+  stage: build
+  script:
+    - ./build.sh
