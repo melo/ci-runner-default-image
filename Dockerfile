@@ -1,5 +1,5 @@
 FROM ubuntu
-MAINTAINER Pedro Melo <melo@simplicidade.org>
+LABEL Author Pedro Melo <melo@simplicidade.org>
 
 RUN apt-get update                                                                      \
  && apt-get install -y nodejs npm git docker.io carton redis-tools mysql-client curl jq \
