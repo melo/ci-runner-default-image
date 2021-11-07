@@ -1,12 +1,14 @@
 FROM ubuntu
 LABEL Author Pedro Melo <melo@simplicidade.org>
 
-RUN apt-get update                                                                      \
- && apt-get install -y nodejs npm git docker.io carton redis-tools mysql-client curl jq \
- && npm install -g uglify-js csso gitbook-cli                                           \
- && cpanm -n App::cpanminus Carton Capture::Tiny Getopt::Long JSON::MaybeXS Path::Tiny  \
- && apt-get clean autoclean                                                             \
- && apt-get autoremove -y                                                               \
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y                                                                            \
+ && apt-get install -y nodejs npm git docker.io carton redis-tools mysql-client curl jq          \
+ && npm install -g uglify-js csso gitbook-cli                                                    \
+ && cpanm -n App::cpanminus Carton Capture::Tiny Getopt::Long JSON::MaybeXS Path::Tiny App::cpm  \
+ && apt-get clean autoclean                                                                      \
+ && apt-get autoremove -y                                                                        \
  && rm -rf "$HOME/.cpanm" "$HOME/.npm"
 
 ENV MY_BINS /usr/local/bin
