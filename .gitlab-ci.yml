@@ -4,4 +4,5 @@ stages:
 build-and-push:
   stage: build
   script:
+    - echo "$DockerHubToken" | docker login -u melopt --password-stdin
     - ./build.sh
